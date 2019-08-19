@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <!-- Page Heading -->
+    <h3 class="my-4"><b><left>Add and Delete Credentials</left></b></h3>
+
+    <div class="row">
+        <div class="col">
+            <form onsubmit="return false">
+                <h4><i>Authorization</i></h4>
+                <input type = "text" name="curruser" class="form-control" placeholder="User Auth" required/>
+                <input type = "text" name="currpass" class="form-control" placeholder="Auth Key" required/>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <form onsubmit="return false">
+                <h4><i>Add New Credentials</i></h4>
+                <input type = "text" name="newuser" class="form-control" placeholder="New User" required/>
+                <input type = "text" name="newpass" class="form-control" placeholder="New Key" required/>
+                <input type="submit" onclick='add();' class="btn btn-success" value="Submit">
+            </form>
+        </div>
+        <div class="col">
+            <form onsubmit="return false">
+                <h4><i>Delete Credentials</i></h4>
+                <input type = "text" name="userdelete" class="form-control" placeholder="User To Delete" required/>
+                <input type="submit" onclick='deleteCred();' class="btn btn-success" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+
+<script>
+    function add(){
+        var user = document.getElementsByName('curruser')[0].value;
+        var pass = document.getElementsByName('currpass')[0].value;
+        var newuser = document.getElementsByName('newuser')[0].value;
+        var newpass = document.getElementsByName('newpass')[0].value;
+        $.ajax({
+            url: 'new/',
+            headers: {
+                'X-Auth-User':user,
+                'X-Secret':pass,
+                'X-New-User':newuser,
+                'X-New-Secret':newpass
+            },
+            type: "POST",
+            dataType: "text",
+            success: function(responseText){
+                alert("Add Success");
+            },
+            error: function(responseText){
+                alert("Invalid Authorization");
+            }
+        });
+    }
+
+    function deleteCred(){
+        var user = document.getElementsByName('curruser')[0].value;
+        var pass = document.getElementsByName('currpass')[0].value;
+        var deluser = document.getElementsByName('userdelete')[0].value;
+        $.ajax({
+            url: 'delete/',
+            headers: {
+                'X-Auth-User':user,
+                'X-Secret':pass,
+                'X-Delete-User':deluser
+            },
+            type: "DELETE",
+            dataType: "text",
+            success: function(responseText){
+                alert("Delete Success");
+            },
+            error: function(responseText){
+                alert("Invalid Authorization or User to Delete does not Exist");
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
